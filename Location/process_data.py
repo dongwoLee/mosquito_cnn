@@ -25,20 +25,10 @@ for single_date in daterange:
     wholeDateList.append(dateList) #make wholeDate List 
 
 
-
-
 data = pd.read_csv('Salesio_change_1.csv')
 mos = (data[str(standardDate)].tolist())
 mos = mos[-1]
 
-# for i in range(len(dateList)):
-#     for j in range(len(wholeDate[0])):
-#         if(dateList[i]==wholeDate[0][j]):
-#             result=data[str(dateList[i])].tolist()
-#             result[-1]=mos ## change mosquito data
-#             with open("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Salesio_"+str(dateList[i])+".csv","a") as f:
-#                 wr = csv.writer(f)
-#                 wr.writerow(result)
 
 
 
