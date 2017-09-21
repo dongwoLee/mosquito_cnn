@@ -14,7 +14,7 @@ def moveCsv(file,DList):#Dlist is WholeDataList
 	locationData = pd.read_csv(file)
 	locationData = locationData['Date']
 
-	dst = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/KBS/"
+	dst = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/"
 
 	temp = set(locationData) & set(DList)
 	temp = (sorted(temp,key=lambda d:tuple(map(int,d.split('-')))))
@@ -25,5 +25,5 @@ def moveCsv(file,DList):#Dlist is WholeDataList
 
 if __name__ == '__main__':
 	wholeDataList = getFileName("C:/Users/dw/Desktop/mosquito_cnn/split_csv")
-	moveCsv("C:/Users/dw/Desktop/mosquito_cnn/mosquito_data/KBS.csv",wholeDataList)
+	moveCsv("C:/Users/dw/Desktop/mosquito_cnn/mosquito_data/Yoonjung_Elementary.csv",wholeDataList)
 
