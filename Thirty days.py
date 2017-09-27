@@ -22,7 +22,7 @@ def split_30Days(file):
 				temp_data = pd.DataFrame(data[wholeColumnList[j][k]])
 				result.append(temp_data)
 			result = pd.concat(result, axis=1)
-			result.to_csv('C://Users/dw/Desktop/mosquito_cnn/split_csv/'+str(wholeColumnList[j][-1])+'.csv')
+			result.to_csv('C://Users/dw/Desktop/mosquito_cnn/split_csv/noHeaderIndex/'+str(wholeColumnList[j][-1])+'.csv',index=False,header=None)
 
 if __name__ == "__main__":
 	split_30Days('C:/Users/dw/Desktop/mosquito_cnn/meterology/factor_data_result.csv')

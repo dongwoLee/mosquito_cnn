@@ -27,7 +27,7 @@ def changeToLevel(file):
 			mosData[i]=8
 
 	df_csv = pd.DataFrame(mosData)
-	df_csv.to_csv("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/Yoonjung_Elementary_level.csv")
+	df_csv.to_csv("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq/Yoonjung_Elementary_level.csv",index=False,header=None)
 
 
 if __name__ == '__main__':
