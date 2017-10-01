@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+from numpy import array
 import csv
 import os,glob
 
@@ -11,7 +12,7 @@ def getFileName(dir):
 
 	return dateList
 
-def readCsv(csvlist):
+def readCsv(csvlist):# label data should be made by this function.
 
 	dataSet = []
 	for i in range(len(csvlist)):
@@ -22,14 +23,27 @@ def readCsv(csvlist):
 
 	return dataSet
 
+def readCsvTwoDimension(csvList):#training input should be made by two dimensional list.
+	
+	twoDimensionData = [] 
+
+	return 
+
 def makeTrainingSet():#training and test mosq
 	
+	location = []
+	trainCsv=[]
 	for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
-		if(folder=='.DS_Store'):
+		if folder == '.DS_Store':
 			continue
 		else:
-			print (folder)
+			location.append(folder)
 
+	for i in range(len(location)):
+		trainCsv.extend(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/"+str(location[i])))
+
+	
+	
 
 def makeLabel_level():#training level and test level 
 
@@ -42,10 +56,12 @@ def makeLabel_level():#training level and test level
 	train = wholeLabel[:int(len(wholeLabel)*0.8)]
 	test = wholeLabel[int(len(wholeLabel)*0.8):len(wholeLabel)]
 
-	return train,test
+	return array(train),array(test)
+
 
 if __name__ == '__main__':
 	
 	trainLabel,testLabel = makeLabel_level()
-	print (len(trainLabel),len(testLabel))
-	(makeTrainingSet())
+	# print ((trainLabel),(testLabel))
+	print(len(makeTrainingSet()))
+
