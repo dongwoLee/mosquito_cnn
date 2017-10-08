@@ -3,6 +3,7 @@ import numpy as np
 from numpy import array
 import csv
 import os,glob
+from tensorflow.examples.tutorials.mnist import input_data
 
 def getFileName(dir):
 	os.chdir(dir)
@@ -23,22 +24,12 @@ def readCsv(csvlist):# label data should be made by this function.
 
 	return dataSet
 
-def readCsvTwoDimension(csvList):#training input should be made by two dimensional list.
-	
-	Matrix = []
-
-	for i in range(len(csvList)):
-		with open(csvList[i],'r') as f:
-			reader = csv.reader(f,delimiter=',')
-			Matrix.append(list(reader))
-
-	return Matrix
-
 def makeTrainingSet():#training and test mosq
 	
 	location = []
 	trainFolder = []
 	trainCsv = []
+	wholeCsv = []
 	for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
 		if folder == '.DS_Store':
 			continue
@@ -52,11 +43,20 @@ def makeTrainingSet():#training and test mosq
 		for k in range(len(trainFolder[j])):
 			trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/"+str(location[j])+"/"+str(trainFolder[j][k])
 
-	return len(trainFolder)
-	# trainFolder = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/Congress/")
-	
-	# train_data = readCsvTwoDimension(trainCsv)
-	
+	for p in range(len(trainFolder)):
+		for q in range(len(trainFolder[p])):
+			with open(trainFolder[p][q],'r') as f:
+				reader = csv.reader(f,delimiter=',')
+				 # this reader convert convert list to string
+				trainCsv.append(list(reader))
+
+	for index in range(len(trainCsv)):
+		wholeCsv.append([[float(y) for y in x] for x in trainCsv[index]])
+
+	trainingCsv = trainCsv[:int(len(trainCsv)*0.8)]
+	testCsv  = trainCsv[int(len(trainCsv)*0.8):len(trainCsv)]
+
+	return array(trainingCsv),array(testCsv)
 
 def makeLabel_level():#training level and test level 
 
@@ -68,16 +68,32 @@ def makeLabel_level():#training level and test level
 	train = wholeLabel[:int(len(wholeLabel)*0.8)]
 	test = wholeLabel[int(len(wholeLabel)*0.8):len(wholeLabel)]
 
-	train = list(map(float,train))
-	test = list(map(float,test))
+	train = list(map(int,train))
+	test = list(map(int,test))
 
-	return array(train),array(test)
+	train = np.array(train)
+	test = np.array(test)
 
+	train_ = np.zeros((len(train),9))
+	test_ = np.zeros((len(test),9))
+
+	train_[np.arange(len(train)),train] = 1
+	test_[np.arange(len(test)),test] = 1
+
+	return (train_),(test_)
 
 if __name__ == '__main__':
 	
-	#trainLabel,testLabel = makeLabel_level()
-	# print(readCsvTwoDimension())
-	#print ((trainLabel),(testLabel))
-	print((makeTrainingSet()))
+	trainingCsv , testCsv = makeTrainingSet() 
+	trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
+	print (type(trainLabel))
+	X = tf.placeholder(tf.float32, shape=[None,5400])
+	Y = tf.placeholder(tf.float32, shape=[None,9])
+
+
+
+	
+
+
+
 
