@@ -81,16 +81,12 @@ def makeLabel_level():  # training level and test level
     train_[np.arange(len(train)), train] = 1
     test_[np.arange(len(test)), test] = 1
 
-    train_ = [train]
-    test_ = [test]
-    return (train_), (test_)
+    return [(train_)], [(test_)]
 
 
 if __name__ == '__main__':
     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
-
-
 
     X = tf.placeholder(tf.float32, shape=[None,180,30,1])
     Y = tf.placeholder(tf.float32, shape=[None,9])
