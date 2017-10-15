@@ -4,9 +4,10 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./mnist/data/", one_hot=True)
 
-batch_xs, batch_ys = mnist.train.next_batch(1)
+batch_xs,batch_ys = mnist.train.next_batch(1)
 
-print(batch_xs,batch_ys)
+print ((batch_ys))
+
 # #########
 # # 신경망 모델 구성
 # ######
@@ -63,7 +64,7 @@ print(batch_xs,batch_ys)
 # sess = tf.Session()
 # sess.run(init)
 #
-# batch_size = 100
+# batch_size = 1
 # total_batch = int(mnist.train.num_examples / batch_size)
 #
 # for epoch in range(15):
