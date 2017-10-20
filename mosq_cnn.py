@@ -54,8 +54,8 @@ def makeTrainingSet():  # training and test mosq
                     for element in row:
                         trainCsv.append(float(element))
 
-    trainingCsv = [trainCsv[:46472400]]
-    testCsv  = [trainCsv[46472400:58087800]]
+    trainingCsv = trainCsv[:46472400]
+    testCsv  = trainCsv[46472400:58087800]
 
     return array(trainingCsv),array(testCsv)
 
@@ -81,7 +81,7 @@ def makeLabel_level():  # training level and test level
     train_[np.arange(len(train)), train] = 1
     test_[np.arange(len(test)), test] = 1
 
-    return [(train_)], [(test_)]
+    return (train_), (test_)
 
 
 if __name__ == '__main__':
@@ -122,14 +122,23 @@ if __name__ == '__main__':
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
+    train_two = []
+    split_x = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
+    split_x = array(split_x)
+
+    for index in range(len(split_x)):
+        train_two.append(np.reshape(split_x[index],(-1,30)))
+
+    train_two = array(train_two)
+
     for epoch in range(15):
         total_cost = 0
 
-        for i in range(total_batch):
-            batch_xs = trainingCsv[i]
+        for i in range(8606):
+            batch_xs = train_two[i]
             batch_ys = trainLabel[i]
 
-            batch_xs = batch_xs.reshape(-1,180,30,1)
+            # batch_xs = batch_xs.reshape(-1,180,30,1)
             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
 
             total_cost += cost_val
