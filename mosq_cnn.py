@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -63,7 +63,7 @@ def makeLabel_level():  # training level and test level
 
     train = []
     test = []
-    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train = wholeLabel[:8606]
@@ -126,24 +126,21 @@ if __name__ == '__main__':
     split_x = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
     split_x = array(split_x)
 
-    for index in range(len(split_x)):
-        train_two.append(np.reshape(split_x[index],(-1,30)))
-
-    train_two = array(train_two)
-
-    for epoch in range(15):
-        total_cost = 0
-
-        for i in range(8606):
-            batch_xs = train_two[i]
-            batch_ys = trainLabel[i]
-
-            # batch_xs = batch_xs.reshape(-1,180,30,1)
-            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-
-            total_cost += cost_val
-
-        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
-
-print('최적화 완료!')
+    train_two = np.reshape(split_x,(-1,30))
+    print (train_two[0])
+#     for epoch in range(15):
+#         total_cost = 0
+#
+#         for i in range(8606):
+#             batch_xs = train_two[i]
+#             batch_ys = trainLabel[i]
+#
+#             # batch_xs = batch_xs.reshape(-1,180,30,1)
+#             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+#
+#             total_cost += cost_val
+#
+#         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+#
+# print('최적화 완료!')
 
