@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,8 +61,11 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
+
+    train_label = []
+    test_label = []
 
     train = wholeLabel[:8606]
     test = wholeLabel[8606:10757]
@@ -79,7 +82,11 @@ def makeLabel_level():  # training level and test level
     train_[np.arange(len(train)), train] = 1
     test_[np.arange(len(test)), test] = 1
 
-    return (train_), (test_)
+    for i in range(len(train_)):
+        for j in range(len(train_[i])):
+            train_label.append(train_[i][j])
+
+    return (array(train_label)), (test_)
 
 if __name__ == '__main__':
     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
@@ -99,7 +106,6 @@ if __name__ == '__main__':
     L2 = tf.nn.relu(L2)
     L2 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
 
-
     W3 = tf.Variable(tf.random_normal([45*8*64,256],stddev=0.01))
     L3 = tf.reshape(L2,[-1,45*8*64])
     L3 = tf.matmul(L3,W3)
@@ -116,28 +122,26 @@ if __name__ == '__main__':
     sess = tf.Session()
     sess.run(init)
 
-    batch_size = 1
+    batch_size = 100
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
-    print (trainingCsv)
+    img = trainingCsv.reshape(-1,180,30,1)
+    label = trainLabel.reshape(-1,1,9,1)
 
-    # img = trainingCsv.reshape(180,30)
-    # print (img[0])
+    for epoch in range(15):
+        total_cost = 0
 
-#     for epoch in range(15):
-#         total_cost = 0
-#
-#         for i in range(8606):
-#             batch_xs = img[i]
-#             batch_ys = trainLabel[i]
-#
-#             # batch_xs = batch_xs.reshape(-1,180,30,1)
-#             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-#
-#             total_cost += cost_val
-#
-#         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
-#
-# print('최적화 완료!')
+        for i in range(total_batch):
+            batch_xs = img[batch_size]
+            batch_ys = trainLabel[batch_size]
+
+            # batch_xs = batch_xs.reshape(-1,180,30,1)
+            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+
+            total_cost += cost_val
+
+        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+
+print('최적화 완료!')
 
