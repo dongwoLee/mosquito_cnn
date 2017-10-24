@@ -5,8 +5,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./mnist/data/", one_hot=True)
 
 batch_xs, batch_ys = mnist.train.next_batch(1)
-
-print (type(batch_ys[0][0]))
+print (type(batch_xs[0][0]),type(batch_ys[0][0]))
 
 # #########
 # # 신경망 모델 구성

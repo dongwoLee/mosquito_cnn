@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,9 +61,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    train = []
-    test = []
-    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train = wholeLabel[:8606]
@@ -83,7 +81,6 @@ def makeLabel_level():  # training level and test level
 
     return (train_), (test_)
 
-
 if __name__ == '__main__':
     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
@@ -101,6 +98,7 @@ if __name__ == '__main__':
     L2 = tf.nn.conv2d(L1,W2,strides=[1,1,1,1],padding='SAME')
     L2 = tf.nn.relu(L2)
     L2 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
+
 
     W3 = tf.Variable(tf.random_normal([45*8*64,256],stddev=0.01))
     L3 = tf.reshape(L2,[-1,45*8*64])
@@ -122,17 +120,16 @@ if __name__ == '__main__':
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
-    train_two = []
-    split_x = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
-    split_x = array(split_x)
+    print (trainingCsv)
 
-    train_two = np.reshape(split_x,(-1,30))
-    print (train_two[0])
+    # img = trainingCsv.reshape(180,30)
+    # print (img[0])
+
 #     for epoch in range(15):
 #         total_cost = 0
 #
 #         for i in range(8606):
-#             batch_xs = train_two[i]
+#             batch_xs = img[i]
 #             batch_ys = trainLabel[i]
 #
 #             # batch_xs = batch_xs.reshape(-1,180,30,1)
