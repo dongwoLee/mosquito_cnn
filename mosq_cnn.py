@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,7 +61,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train_label = []
@@ -126,23 +126,25 @@ if __name__ == '__main__':
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
-    img = trainingCsv.reshape(-1,180,30,1)
-    label = trainLabel.reshape(-1,1,9,1)
+    # img = np.reshape(trainingCsv,(-1,180,30,1))
+    # label = np.reshape(trainLabel,(-1,1,9,1))
+    img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
+    label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
+
+    for epoch in range(15):
+        total_cost = 0
+
+        for i in range(8606):
+            batch_xs = img[i]
+            batch_ys = label[i]
+
+            batch_xs = batch_xs.reshape(-1,180,30,1)
+            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
 
 
-#     for epoch in range(15):
-#         total_cost = 0
-#
-#         for i in range(8606):
-#             batch_xs = img[i]
-#             batch_ys = label[i]
-#
-#             # batch_xs = batch_xs.reshape(-1,180,30,1)
-#             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-#
-#             total_cost += cost_val
-#
-#         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
-#
-# print('최적화 완료!')
+            total_cost += cost_val
+
+        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+
+print('최적화 완료!')
 
