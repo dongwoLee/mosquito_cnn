@@ -5,7 +5,8 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./mnist/data/", one_hot=True)
 
 batch_xs, batch_ys = mnist.train.next_batch(1)
-print ((batch_ys.shape))
+batch_xs = batch_xs.reshape(-1,28,28,1)
+print (batch_xs)
 
 #########
 # 신경망 모델 구성
@@ -50,8 +51,6 @@ L3 = tf.nn.dropout(L3, keep_prob)
 # 최종 출력값 L3 에서의 출력 256개를 입력값으로 받아서 0~9 레이블인 10개의 출력값을 만듭니다.
 W4 = tf.Variable(tf.random_normal([256, 10], stddev=0.01))
 model = tf.matmul(L3, W4)
-
-print(model)
 
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
 optimizer = tf.train.AdamOptimizer(0.001).minimize(cost)

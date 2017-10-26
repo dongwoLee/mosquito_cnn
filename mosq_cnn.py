@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,7 +61,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train_label = []
@@ -86,14 +86,18 @@ def makeLabel_level():  # training level and test level
         for j in range(len(train_[i])):
             train_label.append(train_[i][j])
 
-    return (array(train_label)), (test_)
+    for p in range(len(test_)):
+        for q in range(len(test_[p])):
+            test_label.append(test_[p][q])
+
+    return (array(train_label)), (array(test_label))
 
 if __name__ == '__main__':
     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
 
     X = tf.placeholder(tf.float32, shape=[None,180,30,1])
-    Y = tf.placeholder(tf.float32, shape=[None,1,9,1])
+    Y = tf.placeholder(tf.float32, shape=[None,1,9])
     keep_prob = tf.placeholder(tf.float32)
 
     W1 = tf.Variable(tf.random_normal([3,3,1,32],stddev=0.01))
@@ -130,24 +134,34 @@ if __name__ == '__main__':
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
 
-    print(label[0].shape)
-    print(model)
+    test_img = [testCsv[i:i + 5400] for i in range(0, len(testCsv), 5400)]
+    test_label = [testLabel[j:j + 9] for j in range(0, len(testLabel), 9)]
 
-#     for epoch in range(15):
-#         total_cost = 0
-#
-#         for i in range(8606):
-#             batch_xs = img[i]
-#             batch_ys = label[i]
-#
-#             batch_xs = batch_xs.reshape(-1,180,30,1)
-#             batch_ys = batch_ys.reshape(-1,1,9,1)
-#             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-#
-#
-#             total_cost += cost_val
-#
-#         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
-#
-# print('최적화 완료!')
+    test_img=array(test_img)
+    test_label=array(test_label)
+    test_label=np.reshape(test_label,(-1,1,9))
+
+    for epoch in range(15):
+        total_cost = 0
+
+        for i in range(total_batch):
+            batch_xs = img[batch_size]
+            batch_ys = label[batch_size]
+
+            batch_xs = batch_xs.reshape(-1,180,30,1)
+            batch_ys = batch_ys.reshape(-1,1,9)
+            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+
+
+            total_cost += cost_val
+
+        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+
+print('최적화 완료!')
+
+is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
+accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
+print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img.reshape(-1,180,30,1),Y:test_label,keep_prob:1}))
+
+
 
