@@ -93,7 +93,7 @@ if __name__ == '__main__':
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
 
     X = tf.placeholder(tf.float32, shape=[None,180,30,1])
-    Y = tf.placeholder(tf.float32, shape=[None,9])
+    Y = tf.placeholder(tf.float32, shape=[None,1,9,1])
     keep_prob = tf.placeholder(tf.float32)
 
     W1 = tf.Variable(tf.random_normal([3,3,1,32],stddev=0.01))
@@ -126,25 +126,28 @@ if __name__ == '__main__':
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
-    # img = np.reshape(trainingCsv,(-1,180,30,1))
-    # label = np.reshape(trainLabel,(-1,1,9,1))
+
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
 
-    for epoch in range(15):
-        total_cost = 0
+    print(label[0].shape)
+    print(model)
 
-        for i in range(8606):
-            batch_xs = img[i]
-            batch_ys = label[i]
-
-            batch_xs = batch_xs.reshape(-1,180,30,1)
-            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-
-
-            total_cost += cost_val
-
-        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
-
-print('최적화 완료!')
+#     for epoch in range(15):
+#         total_cost = 0
+#
+#         for i in range(8606):
+#             batch_xs = img[i]
+#             batch_ys = label[i]
+#
+#             batch_xs = batch_xs.reshape(-1,180,30,1)
+#             batch_ys = batch_ys.reshape(-1,1,9,1)
+#             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+#
+#
+#             total_cost += cost_val
+#
+#         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+#
+# print('최적화 완료!')
 

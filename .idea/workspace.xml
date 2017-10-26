@@ -21,8 +21,8 @@
       <file leaf-file-name="mosq_cnn.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/mosq_cnn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="129" column="47" lean-forward="true" selection-start-line="129" selection-start-column="47" selection-end-line="129" selection-end-column="47" />
+            <state relative-caret-position="260">
+              <caret line="118" column="60" lean-forward="false" selection-start-line="118" selection-start-column="60" selection-end-line="118" selection-end-column="60" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -34,7 +34,7 @@
         <entry file="file://$PROJECT_DIR$/deleteFiles.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="57">
-              <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+              <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -44,10 +44,10 @@
         <entry file="file://$PROJECT_DIR$/mnist.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="133">
-              <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+              <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
               <folding>
                 <element signature="e#58#81#0" expanded="true" />
-                <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+                <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
               </folding>
             </state>
           </provider>
@@ -72,8 +72,8 @@
         <option value="$PROJECT_DIR$/mosquito_cnn.py" />
         <option value="$PROJECT_DIR$/mosToLevel.py" />
         <option value="$PROJECT_DIR$/deleteFiles.py" />
-        <option value="$PROJECT_DIR$/mosq_cnn.py" />
         <option value="$PROJECT_DIR$/mnist.py" />
+        <option value="$PROJECT_DIR$/mosq_cnn.py" />
       </list>
     </option>
   </component>
@@ -99,6 +99,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -127,14 +128,13 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../LectureData" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
   </component>
-  <component name="RunManager" selected="Python.mnist">
+  <component name="RunManager" selected="Python.mosq_cnn">
     <configuration default="false" name="process_data" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -345,8 +345,8 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.mnist" />
-        <item index="1" class="java.lang.String" itemvalue="Python.mosq_cnn" />
+        <item index="0" class="java.lang.String" itemvalue="Python.mosq_cnn" />
+        <item index="1" class="java.lang.String" itemvalue="Python.mnist" />
         <item index="2" class="java.lang.String" itemvalue="Python.deleteFiles" />
         <item index="3" class="java.lang.String" itemvalue="Python.process_data" />
       </list>
@@ -411,7 +411,7 @@
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -467,7 +467,7 @@
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -488,7 +488,7 @@
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -509,7 +509,7 @@
           <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -530,7 +530,7 @@
           <caret line="8" column="6" lean-forward="true" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -551,7 +551,7 @@
           <caret line="8" column="14" lean-forward="false" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -572,7 +572,7 @@
           <caret line="8" column="14" lean-forward="false" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -593,7 +593,7 @@
           <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
@@ -761,7 +761,7 @@
     <entry file="file://$PROJECT_DIR$/deleteFiles.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
-          <caret line="4" column="31" lean-forward="true" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
+          <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -769,18 +769,18 @@
     <entry file="file://$PROJECT_DIR$/mnist.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
-          <caret line="7" column="21" lean-forward="false" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
           <folding>
             <element signature="e#58#81#0" expanded="true" />
-            <marker date="1508931340633" expanded="true" signature="3509:3556" ph="..." />
+            <marker date="1509001087937" expanded="true" signature="3353:3400" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/mosq_cnn.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="129" column="47" lean-forward="true" selection-start-line="129" selection-start-column="47" selection-end-line="129" selection-end-column="47" />
+        <state relative-caret-position="260">
+          <caret line="118" column="60" lean-forward="false" selection-start-line="118" selection-start-column="60" selection-end-line="118" selection-end-column="60" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
