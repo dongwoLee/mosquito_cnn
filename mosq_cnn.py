@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,7 +61,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train_label = []
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
 
     X = tf.placeholder(tf.float32, shape=[None,180,30,1])
-    Y = tf.placeholder(tf.float32, shape=[None,1,9])
+    Y = tf.placeholder(tf.float32, shape=[None,9])
     keep_prob = tf.placeholder(tf.float32)
 
     W1 = tf.Variable(tf.random_normal([3,3,1,32],stddev=0.01))
@@ -139,7 +139,9 @@ if __name__ == '__main__':
 
     test_img=array(test_img)
     test_label=array(test_label)
-    test_label=np.reshape(test_label,(-1,1,9))
+    test_label=np.reshape(test_label,(-1,9))
+
+    print (test_label.shape)
 
     for epoch in range(15):
         total_cost = 0
@@ -149,9 +151,8 @@ if __name__ == '__main__':
             batch_ys = label[batch_size]
 
             batch_xs = batch_xs.reshape(-1,180,30,1)
-            batch_ys = batch_ys.reshape(-1,1,9)
+            batch_ys = batch_ys.reshape(-1,9)
             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-
 
             total_cost += cost_val
 
