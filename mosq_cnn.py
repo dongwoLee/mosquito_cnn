@@ -33,18 +33,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,7 +61,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train_label = []
@@ -119,7 +119,8 @@ if __name__ == '__main__':
     W4 = tf.Variable(tf.random_normal([256,9],stddev=0.01))
     model = tf.matmul(L3,W4)
 
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
+    #cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
+    cost = tf.reduce_mean(tf.squared_difference(Y, model))
     optimizer = tf.train.AdamOptimizer(0.001).minimize(cost)
 
     init = tf.global_variables_initializer()
@@ -132,6 +133,7 @@ if __name__ == '__main__':
 
 
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
+
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
 
     test_img = [testCsv[i:i + 5400] for i in range(0, len(testCsv), 5400)]
@@ -141,9 +143,7 @@ if __name__ == '__main__':
     test_label=array(test_label)
     test_label=np.reshape(test_label,(-1,9))
 
-    print (test_label.shape)
-
-    for epoch in range(15):
+    for epoch in range(8):
         total_cost = 0
 
         for i in range(total_batch):
@@ -156,7 +156,7 @@ if __name__ == '__main__':
 
             total_cost += cost_val
 
-        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.3f}'.format(total_cost / total_batch))
+        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.9f}'.format(total_cost / total_batch))
 
 print('최적화 완료!')
 
@@ -164,5 +164,16 @@ is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
 print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img.reshape(-1,180,30,1),Y:test_label,keep_prob:1}))
 
+dddd = []
 
+with open("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/YeongDeungPo_Park/2011-05-04.csv","r") as f:
+    reader = csv.reader(f,delimiter=',')
+    for row in reader:
+        for element in row:
+            dddd.append(float(element))
+
+dddd=array(dddd)
+
+a = sess.run(model,feed_dict={X:dddd.reshape(-1,180,30,1)})
+print (a,sess.run(tf.argmax(a,1)))
 
