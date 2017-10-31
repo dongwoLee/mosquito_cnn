@@ -154,6 +154,7 @@ if __name__ == '__main__':
             batch_ys = batch_ys.reshape(-1,9)
             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
 
+
             total_cost += cost_val
 
         print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.9f}'.format(total_cost / total_batch))
@@ -173,7 +174,9 @@ with open("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/YeongDeungPo_
             dddd.append(float(element))
 
 dddd=array(dddd)
+dddd = dddd.reshape(-1,180,30,1)
+prediction = tf.argmax(model,1)
 
-a = sess.run(model,feed_dict={X:dddd.reshape(-1,180,30,1)})
-print (a,sess.run(tf.argmax(a,1)))
+print(sess.run(prediction,feed_dict={X:dddd,keep_prob:1.0}))
+
 
