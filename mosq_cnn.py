@@ -3,6 +3,7 @@ import numpy as np
 from numpy import array
 import csv
 import os, glob
+from pprint import pprint
 from tensorflow.examples.tutorials.mnist import input_data
 
 
@@ -33,18 +34,18 @@ def makeTrainingSet():  # training and test mosq
     trainFolder = []
     trainCsv = []
     wholeCsv = []
-    for folder in os.listdir("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate"):
+    for folder in os.listdir("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate"):
         if folder == '.DS_Store':
             continue
         else:
             location.append(folder)  # all location
 
     for i in range(len(location)):
-        trainFolder.append(getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
+        trainFolder.append(getFileName("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[i])))
 
     for j in range(len(trainFolder)):
         for k in range(len(trainFolder[j])):
-            trainFolder[j][k] = "/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
+            trainFolder[j][k] = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/" + str(location[j]) + "/" + str(trainFolder[j][k])
 
     for p in range(len(trainFolder)):
         for q in range(len(trainFolder[p])):
@@ -61,7 +62,7 @@ def makeTrainingSet():  # training and test mosq
 
 def makeLabel_level():  # training level and test level
 
-    wholeLabelCsv = getFileName("/Users/leedongwoo/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
+    wholeLabelCsv = getFileName("C:/Users/dw/Desktop/mosquito_cnn/Label_Data/Level/noDateMosq")
     wholeLabel = readCsv(wholeLabelCsv)
 
     train_label = []
@@ -100,12 +101,12 @@ if __name__ == '__main__':
     Y = tf.placeholder(tf.float32, shape=[None,9])
     keep_prob = tf.placeholder(tf.float32)
 
-    W1 = tf.Variable(tf.random_normal([3,3,1,32],stddev=0.01))
+    W1 = tf.Variable(tf.random_normal([5,5,1,32],stddev=0.01))
     L1 = tf.nn.conv2d(X,W1,strides=[1,1,1,1], padding='SAME')
     L1 = tf.nn.relu(L1)
     L1 = tf.nn.max_pool(L1,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
 
-    W2 = tf.Variable(tf.random_normal([3,3,32,64],stddev=0.01))
+    W2 = tf.Variable(tf.random_normal([5,5,32,64],stddev=0.01))
     L2 = tf.nn.conv2d(L1,W2,strides=[1,1,1,1],padding='SAME')
     L2 = tf.nn.relu(L2)
     L2 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
@@ -119,8 +120,8 @@ if __name__ == '__main__':
     W4 = tf.Variable(tf.random_normal([256,9],stddev=0.01))
     model = tf.matmul(L3,W4)
 
-    #cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
-    cost = tf.reduce_mean(tf.squared_difference(Y, model))
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
+    #cost = tf.reduce_mean(tf.squared_difference(Y, model))
     optimizer = tf.train.AdamOptimizer(0.001).minimize(cost)
 
     init = tf.global_variables_initializer()
@@ -131,10 +132,14 @@ if __name__ == '__main__':
     total_data_len = 10757
     total_batch = int(total_data_len / batch_size)
 
-
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
-
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
+
+    label = array(label)
+    training_label = []
+    for i in range(len(label)):
+        training_label.append(np.reshape(label[i],(1,9)))
+    training_label = array(training_label)
 
     test_img = [testCsv[i:i + 5400] for i in range(0, len(testCsv), 5400)]
     test_label = [testLabel[j:j + 9] for j in range(0, len(testLabel), 9)]
@@ -148,10 +153,10 @@ if __name__ == '__main__':
 
         for i in range(total_batch):
             batch_xs = img[batch_size]
-            batch_ys = label[batch_size]
+            batch_ys = training_label[batch_size]
 
             batch_xs = batch_xs.reshape(-1,180,30,1)
-            batch_ys = batch_ys.reshape(-1,9)
+            #batch_ys = batch_ys.reshape(-1,9)
             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
 
 
@@ -165,18 +170,23 @@ is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
 print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img.reshape(-1,180,30,1),Y:test_label,keep_prob:1}))
 
-dddd = []
-
-with open("/Users/leedongwoo/Desktop/mosquito_cnn/Location_allDate/YeongDeungPo_Park/2011-05-04.csv","r") as f:
-    reader = csv.reader(f,delimiter=',')
-    for row in reader:
-        for element in row:
-            dddd.append(float(element))
-
-dddd=array(dddd)
-dddd = dddd.reshape(-1,180,30,1)
-prediction = tf.argmax(model,1)
-
-print(sess.run(prediction,feed_dict={X:dddd,keep_prob:1.0}))
-
+# dddd = []
+#
+# # with open("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-06-16.csv","r") as f:
+# #     reader = csv.reader(f,delimiter=',')
+# #     for row in reader:
+# #         for element in row:
+# #             dddd.append(float(element))
+# for i in range(0,5400):
+#     dddd.append(1000000.0)
+#
+# dddd=array(dddd)
+# dddd = dddd.reshape(-1,180,30,1)
+# prediction = tf.argmax(model,1)
+#
+# a = (sess.run(prediction,feed_dict={X:dddd,keep_prob:1.0}))
+# print(a)
+# # for i in range(len(a)):
+# #     if(a[i] != 1):
+# #         print(a[i])
 
