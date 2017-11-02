@@ -93,6 +93,20 @@ def makeLabel_level():  # training level and test level
 
     return (array(train_label)), (array(test_label))
 
+def test_new_file(file):
+    testNew = []
+
+    with open(file, "r") as f:
+        reader = csv.reader(f, delimiter=',')
+        for row in reader:
+            for element in row:
+                testNew.append(float(element))
+
+    testNew = array(testNew)
+    testNew =testNew.reshape(-1,180,30,1)
+
+    return testNew
+
 if __name__ == '__main__':
     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
@@ -148,17 +162,15 @@ if __name__ == '__main__':
     test_label=array(test_label)
     test_label=np.reshape(test_label,(-1,9))
 
-    for epoch in range(8):
+    for epoch in range(10):
         total_cost = 0
 
-        for i in range(total_batch):
-            batch_xs = img[batch_size]
-            batch_ys = training_label[batch_size]
-
+        for i in range(8606):
+            batch_xs = img[i]
+            batch_ys = training_label[i]
             batch_xs = batch_xs.reshape(-1,180,30,1)
             #batch_ys = batch_ys.reshape(-1,9)
             _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
-
 
             total_cost += cost_val
 
@@ -170,23 +182,12 @@ is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
 print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img.reshape(-1,180,30,1),Y:test_label,keep_prob:1}))
 
-# dddd = []
-#
-# # with open("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-06-16.csv","r") as f:
-# #     reader = csv.reader(f,delimiter=',')
-# #     for row in reader:
-# #         for element in row:
-# #             dddd.append(float(element))
-# for i in range(0,5400):
-#     dddd.append(1000000.0)
-#
-# dddd=array(dddd)
-# dddd = dddd.reshape(-1,180,30,1)
-# prediction = tf.argmax(model,1)
-#
-# a = (sess.run(prediction,feed_dict={X:dddd,keep_prob:1.0}))
-# print(a)
-# # for i in range(len(a)):
-# #     if(a[i] != 1):
-# #         print(a[i])
+prediction = tf.argmax(model,1)
+
+
+
+
+
+
+
 
