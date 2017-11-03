@@ -3,6 +3,7 @@ import numpy as np
 from numpy import array
 import csv
 import os, glob
+from random import *
 from pprint import pprint
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -149,11 +150,18 @@ if __name__ == '__main__':
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
 
+    img = array(img)
+    training_img = []
+    for i in range(len(img)):
+        training_img.append(np.reshape(img[i],(1,5400)))
+    training_img = array(training_img)
+
     label = array(label)
     training_label = []
     for i in range(len(label)):
         training_label.append(np.reshape(label[i],(1,9)))
     training_label = array(training_label)
+
 
     test_img = [testCsv[i:i + 5400] for i in range(0, len(testCsv), 5400)]
     test_label = [testLabel[j:j + 9] for j in range(0, len(testLabel), 9)]
@@ -182,7 +190,32 @@ is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
 print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img.reshape(-1,180,30,1),Y:test_label,keep_prob:1}))
 
+a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-28.csv")
+b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-29.csv")
+c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-30.csv")
+d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-31.csv")
+e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-01.csv")
+f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-02.csv")
+g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-03.csv")
+h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-04.csv")
+i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-05.csv")
+j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-06.csv")
+k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-07.csv")
+l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-08.csv")
 prediction = tf.argmax(model,1)
+
+print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:l ,keep_prob:1.0}))
 
 
 
