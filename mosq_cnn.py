@@ -170,11 +170,17 @@ if __name__ == '__main__':
     test_label=array(test_label)
     test_label=np.reshape(test_label,(-1,9))
 
-    for epoch in range(10):
+    print(training_img[0].shape)
+    print (training_img.shape)
+    print(training_label[0].shape)
+    print (training_label.shape)
+
+
+    for epoch in range(3):
         total_cost = 0
 
         for i in range(8606):
-            batch_xs = img[i]
+            batch_xs = training_img[i]
             batch_ys = training_label[i]
             batch_xs = batch_xs.reshape(-1,180,30,1)
             #batch_ys = batch_ys.reshape(-1,9)
@@ -216,7 +222,6 @@ print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:l ,keep_prob:1.0}))
-
 
 
 
