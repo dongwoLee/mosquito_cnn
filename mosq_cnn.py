@@ -3,6 +3,7 @@ import numpy as np
 from numpy import array
 import csv
 import os, glob
+from random import *
 from pprint import pprint
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -142,26 +143,59 @@ if __name__ == '__main__':
     sess = tf.Session()
     sess.run(init)
 
-    batch_size = 100
-    total_data_len = 10757
-    total_batch = int(total_data_len / batch_size)
+    batch_size = 50
+    total_batch = 171
 
     img = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
     label = [trainLabel[j:j+9] for j in range(0,len(trainLabel),9)]
 
-    label = array(label)
-    training_label = []
-    for i in range(len(label)):
-        training_label.append(np.reshape(label[i],(1,9)))
-    training_label = array(training_label)
+    training_img = array(img)
+    training_label = array(label)
+    training_label = np.reshape(training_label,(-1,9))
+
+    #batch_size 50
+    training_img_fifty = []
+    for i in range(0,8551,50):
+        training_img_fifty.append(training_img[i:i+50])
+    training_img_fifty = array(training_img_fifty)
+    print (training_img_fifty[0].shape,training_img_fifty[0][0].shape)
+
+    training_label_fifty = []
+    for i in range(0,8551,50):
+        training_label_fifty.append(training_label[i:i+50])
+    training_label_fifty = array(training_label_fifty)
+    print(training_label_fifty[0].shape, training_label_fifty[0][0].shape)
 
     test_img = [testCsv[i:i + 5400] for i in range(0, len(testCsv), 5400)]
     test_label = [testLabel[j:j + 9] for j in range(0, len(testLabel), 9)]
 
-    test_img=array(test_img)
-    test_label=array(test_label)
-    test_label=np.reshape(test_label,(-1,9))
+    test_img = array(test_img)
+    test_label = array(test_label)
 
+    test_img_fifty=[]
+    for i in range(0,8551,50):
+        test_img_fifty.append(test_img[i:i+50])
+    test_img_fifty = array(test_img_fifty)
+    print(test_img_fifty[0].shape, test_img_fifty[0][0].shape)
+
+    test_label_fifty=[]
+    for i in range(0,8551,50):
+        test_label_fifty.append(test_label[i:i+50])
+    test_label_fifty = array(test_label_fifty)
+    print (test_label_fifty[0].shape,test_label_fifty[0][0].shape)
+#     test_image_set = []
+#     for i in range(len(test_img)):
+#         test_image_set.append(np.reshape(test_img[i],(5400)))
+#     test_image_set=array(test_image_set)
+#
+#     test_label_set = []
+#     for j in range(len(test_label)):
+#         test_label_set.append(np.reshape(test_label[j],(9)))
+#     test_label_set=array(test_label_set)
+#
+    for epoch in range(3):
+
+<<<<<<< HEAD
 #     for epoch in range(10):
 #         total_cost = 0
 #
@@ -184,6 +218,65 @@ if __name__ == '__main__':
 #
 # prediction = tf.argmax(model,1)
 
+=======
+        total_cost = 0
+
+        for i in range(total_batch):
+            # training_img[i] = np.reshape(training_img[i],(-1,5400))
+            # training_label[i] = np.reshape(training_label[i],(-1,9))
+            # batch_xs = np.reshape(training_img[i],(1,5400))
+            # batch_ys = np.reshape(training_label[i],(1,9))
+            batch_xs = training_img_fifty[i]
+            batch_ys = training_label_fifty[i]
+            # print("batch_xs :" + str(batch_xs.shape), "batch_ys : " + str(batch_ys.shape))
+            batch_xs = batch_xs.reshape(-1,180,30,1)
+            # batch_ys = batch_ys.reshape(-1,9)
+            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+
+            total_cost += cost_val
+
+        print('Epoch:', '%04d' % (epoch + 1),'Avg. cost =', '{:.9f}'.format(total_cost / total_batch))
+
+print('최적화 완료!')
+
+is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
+accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
+print ('정확도: ',sess.run(accuracy, feed_dict={X:test_img_fifty.reshape(-1,180,30,1),Y:test_label_fifty,keep_prob:1}))
+
+# prediction = tf.argmax(model,1)
+#
+# for i in range(60,100):
+#     a = training_img[i].reshape(-1,180,30,1)
+#     b = training_label[i].reshape(1,9)
+#     print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}),b)
+
+# a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-28.csv")
+# b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-29.csv")
+# c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-30.csv")
+# d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-07-31.csv")
+# e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-01.csv")
+# f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-02.csv")
+# g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-03.csv")
+# h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-04.csv")
+# i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-05.csv")
+# j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-06.csv")
+# k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-07.csv")
+# l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Congress/2012-08-08.csv")
+# prediction = tf.argmax(model,1)
+#
+# print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:l,keep_prob:1.0}))
+>>>>>>> 60366dddfe7a6e128dcce1e75acb56515ba2c53c
 
 
 
