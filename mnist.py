@@ -4,14 +4,9 @@ import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./mnist/data/", one_hot=True)
 
-<<<<<<< HEAD
 batch_xs, batch_ys = mnist.train.next_batch(2)
-print (mnist.test.labels.shape)
-=======
-batch_xs, batch_ys = mnist.train.next_batch(50)
-print (mnist.test.images.shape)
->>>>>>> 60366dddfe7a6e128dcce1e75acb56515ba2c53c
-
+print (batch_xs[0])
+print (batch_ys[1])
 #########
 # 신경망 모델 구성
 ######
@@ -94,23 +89,22 @@ print('최적화 완료!')
 ######
 is_correct = tf.equal(tf.argmax(model, 1), tf.argmax(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
-<<<<<<< HEAD
-=======
 
->>>>>>> 60366dddfe7a6e128dcce1e75acb56515ba2c53c
+
+
 print('정확도:', sess.run(accuracy,
                         feed_dict={X: mnist.test.images.reshape(-1, 28, 28, 1),
                                    Y: mnist.test.labels,
                                    keep_prob: 1}))
 
-<<<<<<< HEAD
+
 prediction = tf.argmax(model,1)
 print (sess.run(prediction,feed_dict={X:mnist.test.images[0].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[1].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[2].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[3].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[4].reshape(-1,28,28,1),keep_prob:1.0}))
-=======
+
 a,b =  mnist.train.next_batch(3)
 
 d = a[0].reshape(-1,28,28,1)
@@ -122,4 +116,4 @@ prediction = tf.argmax(model,1)
 print (sess.run(prediction,feed_dict={X:d,keep_prob:1}),b[0])
 print (sess.run(prediction,feed_dict={X:e,keep_prob:1}),b[1])
 print (sess.run(prediction,feed_dict={X:f,keep_prob:1}),b[2])
->>>>>>> 60366dddfe7a6e128dcce1e75acb56515ba2c53c
+
