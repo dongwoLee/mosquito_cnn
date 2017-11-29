@@ -57,9 +57,12 @@ def makeTrainingSet():  # training and test mosq
                         trainCsv.append(float(element))
 
     trainingCsv = trainCsv[:46472400]
-    testCsv  = trainCsv[46472400:58087800]
+    testingCsv  = trainCsv[46472400:58087800]
 
-    return array(trainingCsv),array(testCsv)
+    trainCsv = [trainingCsv[i:i+5400] for i in range(0,len(trainingCsv),5400)]
+    testCsv = [testingCsv[i:i+5400] for i in range(0,len(testingCsv),5400)]
+
+    return (array(trainCsv)),(array(testCsv))
 
 def makeLabel_level():  # training level and test level
 
@@ -67,19 +70,18 @@ def makeLabel_level():  # training level and test level
     wholeLabel = readCsv(wholeLabelCsv)
 
     nb_classes = 9
-
-    train_label = []
-    test_label = []
-
     train = wholeLabel[:8606]
     test = wholeLabel[8606:10757]
 
-    train = list(map(int,train))
+    train = list(map(int, train))
+    test = list(map(int, test))
 
-    targets = np.array(train).reshape(-1)
-    one_hot_targets = np.eye(nb_classes)[targets]
+    targets_train = np.array(train).reshape(-1)
+    targets_test = np.array(test).reshape(-1)
+    one_hot_train_label = np.eye(nb_classes)[targets_train]
+    one_hot_test_label = np.eye(nb_classes)[targets_test]
 
-    return one_hot_targets[0],test[0]
+    return (one_hot_train_label), (one_hot_test_label)
 
 def test_new_file(file):
     testNew = []
@@ -96,9 +98,10 @@ def test_new_file(file):
     return testNew
 
 if __name__ == '__main__':
-    trainLabel, testLabel = makeLabel_level()
-    print (trainLabel)
-    print(testLabel)
+    trainingCsv_Data,testingCsv_Data = makeTrainingSet()
+    print (trainingCsv_Data)
+    trainLabel_Data, testLabel_Data = makeLabel_level()
+
 #     trainingCsv , testCsv = makeTrainingSet() #len(trainingCsv)=8605
 #     trainLabel,testLabel = makeLabel_level()#Do i have to change Label data using one-hot encoding?
 #
