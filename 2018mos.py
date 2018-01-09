@@ -48,7 +48,7 @@ def makeTrainingTest(rawList):
     return trainingList,testList
 
 def MakeInputSet(InputList):
-
+    # Both training and test will be adopted this function
     InputFactorCsv = []
 
     for i in range(len(InputList)):
@@ -56,17 +56,24 @@ def MakeInputSet(InputList):
             reader = csv.reader(csvfile,delimiter=',')
             for row in reader:
                for i in range(len(row)):
-                   InputFactorCsv.append(row[i])
+                   InputFactorCsv.append(float(row[i]))
 
-    return InputFactorCsv
+    ResultInput = [InputFactorCsv[i:i+5400] for i in range(0,len(InputFactorCsv),5400)]
+
+    return InputList[0][0]
 
 def MakeLabelSet(LabelList):
 
-    with open("C:/Users/dw/Desktop/mosquito_cnn/WholeLevel/"+LabelList[0][1],'r') as csvfile:
-        print(LabelList[0][1])
-        reader = csv.reader(csvfile,delimiter=',')
-        for row in reader:
-            print (row)
+    LabelFactorCsv = []
+    print(LabelList[0][0])
+    for i in range(len(LabelList)):
+        with open("C:/Users/dw/Desktop/mosquito_cnn/WholeLevel/"+LabelList[i][1],'r') as csvfile:
+            reader = csv.reader(csvfile,delimiter=',')
+            for row in reader:
+               for i in range(len(row)):
+                   LabelFactorCsv.append(int(row[i]))
+
+    return (LabelFactorCsv[0])
 
 if __name__ == '__main__':
     resultDataSet = []
@@ -85,5 +92,7 @@ if __name__ == '__main__':
     shuffle(shuffledData)
 
     trainingDataSet, testDataSet = makeTrainingTest(shuffledData)
+    # TrainInput = (MakeInputSet(trainingDataSet))
     print(MakeInputSet(trainingDataSet))
-    print(len(MakeInputSet(trainingDataSet)))
+    print(MakeLabelSet(trainingDataSet))
+
