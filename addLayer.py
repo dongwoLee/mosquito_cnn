@@ -68,13 +68,15 @@ def makeLabel_level():  # training level and test level
     train = wholeLabel[:8606]
     test = wholeLabel[8606:10757]
 
-    train = list(map(int, train))
-    test = list(map(int, test))
+    train_ = list(map(int, train))
+    test_ = list(map(int, test))
 
-    targets_train = np.array(train).reshape(-1)
-    targets_test = np.array(test).reshape(-1)
-    one_hot_train_label = np.eye(nb_classes)[targets_train]
-    one_hot_test_label = np.eye(nb_classes)[targets_test]
+    tmp_train_ = tf.one_hot(train_,nb_classes)
+    tmp_test_ = tf.one_hot(test_,nb_classes)
+
+    with tf.Session() as sess:
+        one_hot_train_label = sess.run(tmp_train_)
+        one_hot_test_label = sess.run(tmp_test_)
 
     return (one_hot_train_label), (one_hot_test_label)
 
@@ -145,19 +147,9 @@ if __name__ == '__main__':
     L7 = tf.nn.max_pool(L7,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
 
     # W8 = tf.Variable(tf.random_normal([5,5,2048,4096],stddev=0.01))
-    # L8 = tf.nn.conv2d(L1,W2,strides=[1,1,1,1],padding='SAME')
-    # L8 = tf.nn.relu(L2)
-    # L8 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
-    #
-    # W9 = tf.Variable(tf.random_normal([5,5,4096,8192],stddev=0.01))
-    # L9 = tf.nn.conv2d(L1,W2,strides=[1,1,1,1],padding='SAME')
-    # L9 = tf.nn.relu(L2)
-    # L9 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
-    #
-    # W10 = tf.Variable(tf.random_normal([5,5,8192,16384],stddev=0.01))
-    # L10 = tf.nn.conv2d(L1,W2,strides=[1,1,1,1],padding='SAME')
-    # L10 = tf.nn.relu(L2)
-    # L10 = tf.nn.max_pool(L2,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
+    # L8 = tf.nn.conv2d(L7,W8,strides=[1,1,1,1],padding='SAME')
+    # L8 = tf.nn.relu(L8)
+    # L8 = tf.nn.max_pool(L8,ksize=[1,2,2,1],strides=[1,2,2,1],padding='SAME')
 
     W11 = tf.Variable(tf.random_normal([2*1*2048,8192],stddev=0.01))
     L11 = tf.reshape(L7,[-1,2*1*2048])
@@ -169,23 +161,23 @@ if __name__ == '__main__':
     model = tf.matmul(L11,W12)
 
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=model, labels=Y))
-    optimizer = tf.train.AdamOptimizer(0.001).minimize(cost)
+    optimizer = tf.train.AdamOptimizer(0.0001).minimize(cost)
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
     sess.run(init)
 
-    batch_size = 100
-    total_batch = 86
+    batch_size = 50
+    total_batch = 172
 
-    training_img_batch = makeBatchInput(trainingCsv_Data,8600,100)
-    training_label_batch = makeBatchInput(trainLabel_Data,8600,100)
-    testing_img_batch = makeBatchInput(testingCsv_Data,2100,100)
-    testing_label_batch = makeBatchInput(testLabel_Data,2100,100)
+    training_img_batch = makeBatchInput(trainingCsv_Data,8600,50)
+    training_label_batch = makeBatchInput(trainLabel_Data,8600,50)
+    # testing_img_batch = makeBatchInput(testingCsv_Data,2100,100)
+    # testing_label_batch = makeBatchInput(testLabel_Data,2100,100)
 
-    print (training_img_batch[0].shape,training_label_batch[0].shape,testing_img_batch[0].shape,testing_label_batch[0].shape)
+    # print (training_img_batch[0].shape,training_label_batch[0].shape)
 
-    for epoch in range(7):
+    for epoch in range(10):
 
         total_cost = 0
 
@@ -193,8 +185,9 @@ if __name__ == '__main__':
             batch_xs = training_img_batch[i]
             batch_ys = training_label_batch[i]
             batch_xs = batch_xs.reshape(-1,180,30,1)
+
             # batch_ys = batch_ys.reshape(-1,9)
-            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.7})
+            _, cost_val = sess.run([optimizer,cost],feed_dict={X:batch_xs, Y: batch_ys, keep_prob:0.5})
 
             total_cost += cost_val
 
@@ -204,34 +197,40 @@ print('최적화 완료!')
 
 is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
 accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
-print ('정확도: ',sess.run(accuracy, feed_dict={X:testing_img_batch.reshape(-1,180,30,1),Y:testing_label_batch,keep_prob:1}))
+print ('정확도: ',sess.run(accuracy, feed_dict={X:testingCsv_Data.reshape(-1,180,30,1),Y:testLabel_Data,keep_prob:1}))
 
-# # a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-07-28.csv")
-# # b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-07-29.csv")
-# # c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-07-30.csv")
-# # d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-07-31.csv")
-# # e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-01.csv")
-# # f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-02.csv")
-# # g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-03.csv")
-# # h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-04.csv")
-# # i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-05.csv")
-# # j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-06.csv")
-# # k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-07.csv")
-# # l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2014-08-08.csv")
-# # prediction = tf.argmax(model,1)
-# #
-# # print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
-# # print (sess.run(prediction,feed_dict={X:l,keep_prob:1.0}))
+a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-28.csv")
+b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-29.csv")
+c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-30.csv")
+d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-31.csv")
+e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-01.csv")
+f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-02.csv")
+g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-03.csv")
+h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-04.csv")
+i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-05.csv")
+j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-06.csv")
+k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-07.csv")
+l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-08.csv")
+m = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-09.csv")
+n = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-10.csv")
+
+prediction = tf.argmax(model,1)
+
+print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:l,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:m,keep_prob:1.0}))
+print (sess.run(prediction,feed_dict={X:n,keep_prob:1.0}))
+
 
 
 

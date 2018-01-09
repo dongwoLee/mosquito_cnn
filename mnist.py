@@ -5,8 +5,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("./mnist/data/", one_hot=True)
 
 batch_xs, batch_ys = mnist.train.next_batch(100)
-print (batch_xs[0])
-print (batch_ys.shape)
+
 #########
 # 신경망 모델 구성
 ######
@@ -72,7 +71,6 @@ for epoch in range(1):
         batch_xs, batch_ys = mnist.train.next_batch(batch_size)
         # 이미지 데이터를 CNN 모델을 위한 자료형태인 [28 28 1] 의 형태로 재구성합니다.
         batch_xs = batch_xs.reshape(-1, 28, 28, 1)
-
         _, cost_val = sess.run([optimizer, cost],
                                feed_dict={X: batch_xs,
                                           Y: batch_ys,
@@ -88,16 +86,11 @@ print('최적화 완료!')
 # 결과 확인
 ######
 is_correct = tf.equal(tf.argmax(model, 1), tf.argmax(Y, 1))
+print (is_correct)
 accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
-
-
-
-print('정확도:', sess.run(accuracy,
-                        feed_dict={X: mnist.test.images.reshape(-1, 28, 28, 1),
-                                   Y: mnist.test.labels,
-                                   keep_prob: 1}))
-
-
+print('정확도:', sess.run(accuracy,feed_dict={X: mnist.test.images.reshape(-1, 28, 28, 1), Y: mnist.test.labels,keep_prob: 1}))
+#
+#
 prediction = tf.argmax(model,1)
 print (sess.run(prediction,feed_dict={X:mnist.test.images[0].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[1].reshape(-1,28,28,1),keep_prob:1.0}))
@@ -105,15 +98,16 @@ print (sess.run(prediction,feed_dict={X:mnist.test.images[2].reshape(-1,28,28,1)
 print (sess.run(prediction,feed_dict={X:mnist.test.images[3].reshape(-1,28,28,1),keep_prob:1.0}))
 print (sess.run(prediction,feed_dict={X:mnist.test.images[4].reshape(-1,28,28,1),keep_prob:1.0}))
 
-a,b =  mnist.train.next_batch(3)
-
-d = a[0].reshape(-1,28,28,1)
-e = a[1].reshape(-1,28,28,1)
-f = a[2].reshape(-1,28,28,1)
-
-prediction = tf.argmax(model,1)
-
-print (sess.run(prediction,feed_dict={X:d,keep_prob:1}),b[0])
-print (sess.run(prediction,feed_dict={X:e,keep_prob:1}),b[1])
-print (sess.run(prediction,feed_dict={X:f,keep_prob:1}),b[2])
+#
+# a,b =  mnist.train.next_batch(3)
+#
+# d = a[0].reshape(-1,28,28,1)
+# e = a[1].reshape(-1,28,28,1)
+# f = a[2].reshape(-1,28,28,1)
+#
+# prediction = tf.argmax(model,1)
+#
+# print (sess.run(prediction,feed_dict={X:d,keep_prob:1}),b[0])
+# print (sess.run(prediction,feed_dict={X:e,keep_prob:1}),b[1])
+# print (sess.run(prediction,feed_dict={X:f,keep_prob:1}),b[2])
 
