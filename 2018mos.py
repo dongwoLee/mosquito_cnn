@@ -1,9 +1,8 @@
 import csv
 import os,glob
-import random
-import shutil
 from random import shuffle
 import tensorflow as tf
+from numpy import array
 
 def getInputCsv(list):
 
@@ -61,7 +60,7 @@ def MakeInputSet(InputList):
 
     ResultInput = [InputFactorCsv[i:i+5400] for i in range(0,len(InputFactorCsv),5400)]
 
-    return (ResultInput)
+    return array(ResultInput)
 
 def MakeLabelSet(LabelList):
 
@@ -82,6 +81,15 @@ def MakeLabelSet(LabelList):
 
     return (one_hot_label)
 
+def makeBatch(DataList,ListLength,batchSize):
+
+    Output = []
+    for i in range(0,ListLength,batchSize):
+        Output.append(DataList[i:i+batchSize])
+    Output = array(Output)
+
+    return Output
+
 if __name__ == '__main__':
     resultDataSet = []
     in_Dir = "C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/"
@@ -100,7 +108,15 @@ if __name__ == '__main__':
 
     trainingDataSet, testDataSet = makeTrainingTest(shuffledData)
     TrainInput = (MakeInputSet(trainingDataSet))
-    TestInput = (MakeLabelSet(trainingDataSet))
+    TrainLabel = (MakeLabelSet(trainingDataSet))
 
-    print(TrainInput[0])
-    print(TestInput[0])
+    TestInput = (MakeInputSet(testDataSet))
+    TestLabel = (MakeLabelSet(testDataSet))
+
+    TrainInputBatch = makeBatch(TrainInput,6600,100)
+    TrainLabelBatch = makeBatch(TrainLabel,2800,100)
+
+    TestInputBatch = makeBatch(TestInput,6600,100)
+    TestLabelBatch = makeBatch(TestLabel,2800,100)
+
+    
