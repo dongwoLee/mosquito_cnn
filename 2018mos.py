@@ -3,6 +3,7 @@ import os,glob
 import random
 import shutil
 from random import shuffle
+import tensorflow as tf
 
 def getInputCsv(list):
 
@@ -50,7 +51,7 @@ def makeTrainingTest(rawList):
 def MakeInputSet(InputList):
     # Both training and test will be adopted this function
     InputFactorCsv = []
-
+    print(InputList[0][0])
     for i in range(len(InputList)):
         with open("C:/Users/dw/Desktop/mosquito_cnn/WholeInput/"+InputList[i][0],'r') as csvfile:
             reader = csv.reader(csvfile,delimiter=',')
@@ -60,12 +61,13 @@ def MakeInputSet(InputList):
 
     ResultInput = [InputFactorCsv[i:i+5400] for i in range(0,len(InputFactorCsv),5400)]
 
-    return InputList[0][0]
+    return (ResultInput)
 
 def MakeLabelSet(LabelList):
 
     LabelFactorCsv = []
-    print(LabelList[0][0])
+    depth = 9
+    print(LabelList[0][1])
     for i in range(len(LabelList)):
         with open("C:/Users/dw/Desktop/mosquito_cnn/WholeLevel/"+LabelList[i][1],'r') as csvfile:
             reader = csv.reader(csvfile,delimiter=',')
@@ -73,7 +75,12 @@ def MakeLabelSet(LabelList):
                for i in range(len(row)):
                    LabelFactorCsv.append(int(row[i]))
 
-    return (LabelFactorCsv[0])
+    tmp_one_hot = tf.one_hot(LabelFactorCsv,depth)
+
+    with tf.Session() as sess:
+        one_hot_label = sess.run(tmp_one_hot)
+
+    return (one_hot_label)
 
 if __name__ == '__main__':
     resultDataSet = []
@@ -92,7 +99,8 @@ if __name__ == '__main__':
     shuffle(shuffledData)
 
     trainingDataSet, testDataSet = makeTrainingTest(shuffledData)
-    # TrainInput = (MakeInputSet(trainingDataSet))
-    print(MakeInputSet(trainingDataSet))
-    print(MakeLabelSet(trainingDataSet))
+    TrainInput = (MakeInputSet(trainingDataSet))
+    TestInput = (MakeLabelSet(trainingDataSet))
 
+    print(TrainInput[0])
+    print(TestInput[0])
