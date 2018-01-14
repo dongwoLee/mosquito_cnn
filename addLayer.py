@@ -176,6 +176,8 @@ if __name__ == '__main__':
     # testing_label_batch = makeBatchInput(testLabel_Data,2100,100)
 
     # print (training_img_batch[0].shape,training_label_batch[0].shape)
+    print(training_label_batch)
+    print (testLabel_Data.shape)
 
     for epoch in range(10):
 
@@ -195,41 +197,41 @@ if __name__ == '__main__':
 
 print('최적화 완료!')
 
-is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
-accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
-print ('정확도: ',sess.run(accuracy, feed_dict={X:testingCsv_Data.reshape(-1,180,30,1),Y:testLabel_Data,keep_prob:1}))
-
-a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-28.csv")
-b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-29.csv")
-c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-30.csv")
-d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-31.csv")
-e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-01.csv")
-f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-02.csv")
-g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-03.csv")
-h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-04.csv")
-i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-05.csv")
-j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-06.csv")
-k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-07.csv")
-l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-08.csv")
-m = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-09.csv")
-n = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-10.csv")
-
-prediction = tf.argmax(model,1)
-
-print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:l,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:m,keep_prob:1.0}))
-print (sess.run(prediction,feed_dict={X:n,keep_prob:1.0}))
+# is_correct = tf.equal(tf.argmax(model,1),tf.argmax(Y,1))
+# accuracy = tf.reduce_mean(tf.cast(is_correct,tf.float32))
+# print ('정확도: ',sess.run(accuracy, feed_dict={X:testingCsv_Data.reshape(-1,180,30,1),Y:testLabel_Data,keep_prob:1}))
+#
+# a = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-28.csv")
+# b = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-29.csv")
+# c = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-30.csv")
+# d = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-08-31.csv")
+# e = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-01.csv")
+# f = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-02.csv")
+# g = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-03.csv")
+# h = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-04.csv")
+# i = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-05.csv")
+# j = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-06.csv")
+# k = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-07.csv")
+# l = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-08.csv")
+# m = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-09.csv")
+# n = test_new_file("C:/Users/dw/Desktop/mosquito_cnn/Location_allDate/Yoonjung_Elementary/2015-09-10.csv")
+#
+# prediction = tf.argmax(model,1)
+#
+# print (sess.run(prediction,feed_dict={X:a,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:b,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:c,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:d,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:e,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:f,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:g,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:h,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:i,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:j,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:k,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:l,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:m,keep_prob:1.0}))
+# print (sess.run(prediction,feed_dict={X:n,keep_prob:1.0}))
 
 
 
